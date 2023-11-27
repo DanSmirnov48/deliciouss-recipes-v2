@@ -1,7 +1,8 @@
+import { useDesertRecipe } from "@/hooks/useDesert";
 import { useRandomRecipe } from "@/hooks/useRandomRecipe";
 import { Recipe } from "@/types";
 import axios from "axios";
-
+const SPOONACULAR_API_KEY = 'deb18101437e43d78803e73825ccfbac'
 
 export async function getRecipies(searchTerm: string) {
   if (searchTerm) {
@@ -19,39 +20,26 @@ export async function getRecipies(searchTerm: string) {
   return [];
 }
 
-export async function getVeggie() {
+export async function getDesert() {
 
   const response = await axios.get(
-    `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=9&tags=vegetarian`
+    `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=9&tags=dessert`
   );
   console.log(response.data);
   return response.data;
-
 };
 
 
-export async function getRandomRecipes(number: number = 9) {
-  const { recipes, addAllRecipes } = useRandomRecipe();
-
-  // Check if there are already recipes in Zustand
-  if (recipes.length > 0) {
-    console.log("first")
-    return recipes;
-  }
-
-  try {
-    console.log("second")
-    const response = await axios.get(
-      `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=${number}`
-    );
-
-    // Assuming the response data has a property named 'recipes' which is an array of recipe objects
-    const recipes: Recipe[] = response.data.recipes;
-    addAllRecipes(recipes);
-
-    return recipes;
-  } catch (error) {
-    console.error('Error fetching recipes:', error);
-    throw error;
-  }
-}
+// export async function getRandomRecipes(number: number = 9) {
+//   try {
+//     console.log("second")
+//     const response = await axios.get(
+//       `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=${number}`
+//     );
+//     const recipes: Recipe[] = response.data.recipes;
+//     return recipes;
+//   } catch (error) {
+//     console.error('Error fetching recipes:', error);
+//     throw error;
+//   }
+// }

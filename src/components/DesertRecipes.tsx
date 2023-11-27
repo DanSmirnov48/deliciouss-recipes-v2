@@ -6,14 +6,14 @@ import "@splidejs/react-splide/css";
 import { Card } from "./ui/card";
 import { Link } from "react-router-dom";
 
-const RandomRecipies = () => {
+const DesertRecipes = () => {
   const { recipes } = useRandomRecipe();
   const isLoading = false;
 
   return (
     <div className="mt-10 max-w-full">
       <h1 className="text-3xl text-dark-4 text-center my-3 font-semibold">
-        Pupolar Today
+        Deserts
       </h1>
       {!isLoading && (
         <Splide
@@ -58,4 +58,4 @@ const RandomRecipies = () => {
   );
 };
 
-export default RandomRecipies;
+export default DesertRecipes;

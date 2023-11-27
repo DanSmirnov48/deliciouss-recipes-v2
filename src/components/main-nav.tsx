@@ -13,8 +13,8 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link to="/" className="flex items-center space-x-2">
-        <Icons.logo className="h-6 w-6" />
-        <span className="inline-block font-bold">{siteConfig.name}</span>
+        <img src="/favicon.png" alt="" aria-label="logo"/>
+        <span className="inline-block font-bold text-xl">{siteConfig.name}</span>
       </Link>
       {items?.length ? (
         <nav className="flex gap-6">

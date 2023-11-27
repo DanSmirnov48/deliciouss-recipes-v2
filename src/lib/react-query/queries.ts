@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getRandomRecipes, getRecipies } from "./fucntions";
+import { getDesert, getRecipies } from "./fucntions";
 
 export const useSearchRecipes = (searchTerm: string) => {
     return useQuery({
@@ -9,11 +9,18 @@ export const useSearchRecipes = (searchTerm: string) => {
     });
 };
 
-export const useGetRandomRecipies = (number: number = 9) => {
+export const useGetDesertRecipies = () => {
     return useQuery({
-        queryKey: ["useGetRandomRecipies", number],
-        queryFn: async () => getRandomRecipes(number),
-        enabled: !!number,
+        queryKey: ["useGetDesertRecipies"],
+        queryFn: async () => getDesert(),
     });
 };
+
+// export const useGetRandomRecipies = (number: number = 9) => {
+//     return useQuery({
+//         queryKey: ["useGetRandomRecipies", number],
+//         queryFn: async () => getRandomRecipes(number),
+//         enabled: !!number,
+//     });
+// };
 

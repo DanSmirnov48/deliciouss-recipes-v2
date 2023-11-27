@@ -1,17 +1,17 @@
 import Banner from "@/components/Banner";
+import DesertRecipes from "@/components/DesertRecipes";
 import RandomRecipies from "@/components/RandomRecipies";
 import Search from "@/components/Search";
-import { buttonVariants } from "@/components/ui/button";
-import React from "react";
-import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
     <section className="container pb-8 pt-6 md:py-10">
       <div className="flex max-w-full flex-col items-start gap-2 h-[450px]">
         <Banner/>
-        {/* <Search/> */}
+        <Search/>
         <RandomRecipies/>
+        <DesertRecipes/>
+
         {/* <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
           Beautifully designed components <br className="hidden sm:inline" />
           built with Radix UI and Tailwind CSS.
