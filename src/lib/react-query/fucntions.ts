@@ -1,6 +1,7 @@
 import { useDesertRecipe } from "@/hooks/useDesert";
 import { useRandomRecipe } from "@/hooks/useRandomRecipe";
 import { Recipe } from "@/types";
+import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
 const SPOONACULAR_API_KEY = 'deb18101437e43d78803e73825ccfbac'
 
@@ -43,3 +44,14 @@ export async function getDesert() {
 //     throw error;
 //   }
 // }
+
+export async function getRecipeDetails(id: number | undefined): Promise<ExtendedRecipe> {
+  if (!id) {
+    throw new Error("Recipe ID is required");
+  }
+  console.log("calls APIS")
+  const response = await axios.get(
+    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${SPOONACULAR_API_KEY}`
+  );
+  return response.data as ExtendedRecipe;
+}

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getDesert, getRecipies } from "./fucntions";
+import { getDesert, getRecipeDetails, getRecipies } from "./fucntions";
 
 export const useSearchRecipes = (searchTerm: string) => {
     return useQuery({
@@ -24,3 +24,11 @@ export const useGetDesertRecipies = () => {
 //     });
 // };
 
+
+export const useGetRecipeDetails = (id: number | undefined) => {
+    return useQuery({
+      queryKey: ["useGetRecipeDetails", id],
+      queryFn: async () => getRecipeDetails(id),
+      staleTime: 300000, // 5 minutes in milliseconds
+    });
+  };
