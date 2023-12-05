@@ -5,10 +5,16 @@ import { useIngredients } from "@/hooks/useIngredients";
 import {
   useGetAllReviews,
   useGetRecipeDetails,
+  useGetReview,
 } from "@/lib/react-query/queries";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 import { Clock, Timer, Users } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { ratingStyle } from "@/lib/utils";
+import AddReviewForm from "@/components/AddReviewForm";
 
 const Recipe = () => {
   const params = useParams<{ id: string }>();
@@ -19,8 +25,8 @@ const Recipe = () => {
   const isRecipeInMenu = items.some((item) => item.recipe.id === recipeId);
 
   //----------REVIEWS
-  const { data: allReview, isLoading: isAllReviewsLoading } =
-    useGetAllReviews();
+  const { data: reviews, isLoading: isAllReviewsLoading } =
+    useGetReview(recipeId);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -33,7 +39,7 @@ const Recipe = () => {
   const topSection = () => {
     return (
       <div className="flex flex-col md:flex-row mt-8 min-h-[500px]">
-        <div className="w-full md:w-1/2 mb-4 md:mb-0 bg-gray-100 p-4">
+        <div className="w-full md:w-1/2 mb-4 md:mb-0 bg-100 p-4">
           <img
             src={recipe.image}
             alt={recipe.title}
@@ -60,9 +66,22 @@ const Recipe = () => {
             </Button>
           </div>
         </div>
-        <div className="w-full md:w-1/2 md:ml-8 bg-gray-100 p-4">
+        <div className="w-full md:w-1/2 md:ml-8 p-4">
           <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
           <p dangerouslySetInnerHTML={{ __html: recipe.summary }} />
+          {recipe.diets && recipe.diets.length > 0 && (
+            <div className="mt-4 flex flex-wrap space-x-4 items-baseline">
+              <p className="font-bold mr-2">Diets:</p>
+              {recipe.diets.map((diet, index) => (
+                <Badge
+                  key={index}
+                  className="py-2 px-3 rounded-xl text-muted text-sm"
+                >
+                  {diet}
+                </Badge>
+              ))}
+            </div>
+          )}
           <div className="my-5 flex flex-shrink space-x-4">
             <div className="w-full md:w-1/3 mb-4 md:mb-0 flex flex-col items-center">
               <Clock />
@@ -80,19 +99,6 @@ const Recipe = () => {
               <p>{recipe.servings}</p>
             </div>
           </div>
-          {recipe.diets && recipe.diets.length > 0 && (
-            <div className="mt-4 flex flex-wrap space-x-4 items-baseline">
-              <p className="font-bold mr-2">Diets:</p>
-              {recipe.diets.map((diet, index) => (
-                <Badge
-                  key={index}
-                  className="py-2 px-3 rounded-xl text-muted text-sm"
-                >
-                  {diet}
-                </Badge>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     );
@@ -101,7 +107,7 @@ const Recipe = () => {
   const middleSection = () => {
     return (
       <div className="flex flex-col md:flex-row mt-8">
-        <div className="w-full md:w-2/3 mb-4 md:mb-0 p-4 bg-slate-50">
+        <div className="w-full md:w-2/3 mb-4 md:mb-0 p-4">
           {/* Left column 2/3 */}
           <div>
             <h2 className="text-2xl font-bold">Instructions</h2>
@@ -118,7 +124,7 @@ const Recipe = () => {
             </ol>
           </div>
         </div>
-        <div className="w-full md:w-1/3 md:ml-8 p-4 bg-slate-50">
+        <div className="w-full md:w-1/3 md:ml-8 p-4">
           {/* ... (right column 1/3) */}
           <div>
             <h2 className="text-xl font-bold">Ingredients</h2>
@@ -138,21 +144,38 @@ const Recipe = () => {
 
   const reviewSection = () => {
     return (
-      <div className="flex flex-col md:flex-row mt-8">
-        <div className="w-full p-4 bg-slate-50">
+      <div className="flex flex-col md:flex-row my-16">
+        <div className="w-full p-4">
           {isAllReviewsLoading ? (
             <>
               <h1>Loading reviews</h1>
             </>
           ) : (
             <>
-              {allReview?.map((review) => (
-                <div key={review.id}>
-                  <h1>{review.rating}</h1>
-                  <h1>{review.comment}</h1>
-                  <br />
+              {reviews && reviews.length > 0 ? (
+                reviews.map((review) => (
+                  <Card key={review.id} className="my-3">
+                    <CardHeader>
+                      <CardTitle>
+                        <Rating
+                          value={review.rating}
+                          readOnly
+                          itemStyles={ratingStyle}
+                          style={{ maxWidth: 100 }}
+                        />
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>{review.comment}</CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="w-full text-center py-10">
+                  <h1 className="text-2xl">
+                    Be the first to review{" "}
+                    <span className="font-semibold">{recipe.title}</span>
+                  </h1>
                 </div>
-              ))}
+              )}
             </>
           )}
         </div>
@@ -167,6 +190,7 @@ const Recipe = () => {
       {/* Second Section */}
       {middleSection()}
       {/* Reviews Section */}
+      <AddReviewForm recipe={recipe} />
       {reviewSection()}
     </div>
   );

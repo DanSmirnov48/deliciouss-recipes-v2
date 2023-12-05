@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
 import { Link } from "react-router-dom";
-
+import Cart from "./Cart";
 
 interface MainNavProps {
   items?: NavItem[];
@@ -13,8 +13,10 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link to="/" className="flex items-center space-x-2">
-        <img src="/favicon.png" alt="" aria-label="logo"/>
-        <span className="inline-block font-bold text-xl">{siteConfig.name}</span>
+        <img src="/favicon.png" alt="" aria-label="logo" />
+        <span className="inline-block font-bold text-xl">
+          {siteConfig.name}
+        </span>
       </Link>
       {items?.length ? (
         <nav className="flex gap-6">

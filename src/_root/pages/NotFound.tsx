@@ -1,6 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const NotFound = () => {
-  const navigate = useNavigate();
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center">
       <svg

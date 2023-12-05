@@ -2,7 +2,7 @@ import React from "react";
 
 const Banner: React.FC = () => {
   return (
-    <div className="relative w-full h-full">
+    <div className="w-full h-[450px] relative">
       <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent to-black rounded-2xl"></div>
       <img
         src="/images/cooking6.jpg"

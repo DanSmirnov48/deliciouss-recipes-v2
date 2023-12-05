@@ -8,8 +8,7 @@ const Seacrh = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { recipes } = useRandomRecipe();
-  // const { data: recipes, isLoading: recipesLoading } = useSearchRecipes(params.search!);
-
+  
   return (
     <div className="w-full my-20">
       <div className="my-10">
@@ -17,7 +16,7 @@ const Seacrh = () => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         {recipes.map((recipe: RecipeItem, idx) => (
-          <Link to={`/recipe/${recipe.recipe.id}`}>
+          <Link key={idx} to={`/recipe/${recipe.recipe.id}`}>
             <Card className="h-[400px] relative rounded-2xl">
               <img
                 src={recipe.recipe.image}

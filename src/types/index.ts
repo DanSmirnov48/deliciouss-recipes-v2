@@ -7,6 +7,12 @@ export type Review = {
   recipe: number,
 };
 
+export type INewReview = {
+  rating: number,
+  comment: string,
+  recipe: number,
+};
+
 export type Recipe = {
   id: number,
   title: string,

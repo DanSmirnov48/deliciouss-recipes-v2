@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllReviews, getDesert, getRecipeDetails, getRecipies, getReview, addtoReview, deleteReview } from "./fucntions";
-import { Review } from "@/types";
+import { getAllReviews, getDesert, getRecipeDetails, getRecipies, getRecipeReview, addtoReview, deleteReview } from "./fucntions";
+import { INewReview } from "@/types";
 
 export const useSearchRecipes = (searchTerm: string) => {
     return useQuery({
@@ -38,7 +38,7 @@ export const useGetRecipeDetails = (id: number | undefined) => {
 export const useGetReview = (reviewId = 1) => {
     return useQuery({
         queryKey: ["getReview"],
-        queryFn: async () => getReview(reviewId),
+        queryFn: async () => getRecipeReview(reviewId),
     });
 };
 
@@ -52,10 +52,10 @@ export const useGetAllReviews = () => {
 export const useAddReview = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (review: Review) => addtoReview(review),
+        mutationFn: (review: INewReview) => addtoReview(review),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["getAllReviews"],
+                queryKey: ["getReview"],
             });
         },
     });
@@ -67,7 +67,7 @@ export const useDeleteReview = () => {
         mutationFn: (reviewId: number) => deleteReview(reviewId),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["getAllReviews"],
+                queryKey: ["getReview"],
             });
         },
     });

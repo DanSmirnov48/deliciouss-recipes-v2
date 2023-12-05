@@ -1,6 +1,6 @@
 import { useDesertRecipe } from "@/hooks/useDesert";
 import { useRandomRecipe } from "@/hooks/useRandomRecipe";
-import { Recipe, Review } from "@/types";
+import { INewReview, Recipe, Review } from "@/types";
 import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
 const SPOONACULAR_API_KEY = 'deb18101437e43d78803e73825ccfbac'
@@ -56,10 +56,10 @@ export async function getRecipeDetails(id: number | undefined): Promise<Extended
 }
 
 
-export async function getReview(reviewId: number = 1) {
+export async function getRecipeReview(reviewId: number = 1) {
 
   const response = await axios.get(`/api/reviews/?recipe=${reviewId}`);
-  return response.data as Review;
+  return response.data as Review[];
 };
 
 export async function getAllReviews() {
@@ -68,7 +68,7 @@ export async function getAllReviews() {
   return response.data as Review[];
 };
 
-export const addtoReview = async (review: Review) => {
+export const addtoReview = async (review: INewReview) => {
   try {
     await axios.post(`/api/reviews`, review, {
       headers: {

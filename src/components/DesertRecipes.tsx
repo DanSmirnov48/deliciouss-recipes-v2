@@ -1,5 +1,4 @@
 import { useRandomRecipe } from "../hooks/useRandomRecipe";
-import { RecipeItem } from "@/hooks/useDesert";
 //@ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
@@ -30,22 +29,22 @@ const DesertRecipes = () => {
             },
           }}
         >
-          {recipes.map((recipe: RecipeItem, i) => {
+          {recipes.map(({recipe}, i) => {
             return (
               <SplideSlide key={i}>
-                <Link to={`./recipe/${recipe.recipe.id}`}>
+                <Link to={`./recipe/${recipe.id}`}>
                   <Card className="h-[400px] relative rounded-2xl">
                     <img
-                      src={recipe.recipe.image}
-                      alt={recipe.recipe.title}
+                      src={recipe.image}
+                      alt={recipe.title}
                       className="h-full object-cover rounded-2xl"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-80 rounded-2xl"></div>
                     <div className="absolute bottom-4 left-4 text-white text-opacity-90">
                       <h2 className="text-2xl font-semibold">
-                        {recipe.recipe.title}
+                        {recipe.title}
                       </h2>
-                      <p className="mt-3 text-sm">{`Servings: ${recipe.recipe.servings}`}</p>
+                      <p className="mt-3 text-sm">{`Servings: ${recipe.servings}`}</p>
                     </div>
                   </Card>
                 </Link>
