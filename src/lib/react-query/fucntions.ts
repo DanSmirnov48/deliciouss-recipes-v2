@@ -1,6 +1,6 @@
 import { useDesertRecipe } from "@/hooks/useDesert";
 import { useRandomRecipe } from "@/hooks/useRandomRecipe";
-import { Recipe } from "@/types";
+import { Recipe, Review } from "@/types";
 import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
 const SPOONACULAR_API_KEY = 'deb18101437e43d78803e73825ccfbac'
@@ -49,9 +49,45 @@ export async function getRecipeDetails(id: number | undefined): Promise<Extended
   if (!id) {
     throw new Error("Recipe ID is required");
   }
-  console.log("calls APIS")
   const response = await axios.get(
     `https://api.spoonacular.com/recipes/${id}/information?apiKey=${SPOONACULAR_API_KEY}`
   );
   return response.data as ExtendedRecipe;
 }
+
+
+export async function getReview(reviewId: number = 1) {
+
+  const response = await axios.get(`/api/reviews/?recipe=${reviewId}`);
+  return response.data as Review;
+};
+
+export async function getAllReviews() {
+
+  const response = await axios.get(`/api/reviews`);
+  return response.data as Review[];
+};
+
+export const addtoReview = async (review: Review) => {
+  try {
+    await axios.post(`/api/reviews`, review, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.error('Error adding review:', error);
+  }
+};
+
+export const deleteReview = async (reviewId: number) => {
+  try {
+    await axios.delete(`/api/reviews/${reviewId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.error('Error deleting review:', error);
+  }
+};

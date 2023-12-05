@@ -1,5 +1,12 @@
 import { Icons } from "@/components/icons"
 
+export type Review = {
+  id: number,
+  rating: number,
+  comment: string,
+  recipe: number,
+};
+
 export type Recipe = {
   id: number,
   title: string,
@@ -9,7 +16,7 @@ export type Recipe = {
   diets: string[],
 };
 
-type ExtendedIngredient = {
+export type ExtendedIngredient = {
   id: number;
   aisle: string;
   name: string;
