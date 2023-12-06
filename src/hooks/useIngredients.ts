@@ -19,7 +19,12 @@ export const useIngredients = create<IngredientState>()(
             ingredients: [],
             addIngredient: (ingredient) =>
                 set((state) => {
-                    return { ingredients: [...state.ingredients, ingredient] };
+                    if (!state.ingredients.some((i) => i.id === ingredient.id)) {
+                        return {
+                            ingredients: [...state.ingredients, ingredient],
+                        };
+                    }
+                    return state;
                 }),
             removeIngredient: (id) =>
                 set((state) => ({
