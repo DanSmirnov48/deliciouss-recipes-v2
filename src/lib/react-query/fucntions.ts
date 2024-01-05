@@ -3,7 +3,7 @@ import { useRandomRecipe } from "@/hooks/useRandomRecipe";
 import { INewReview, Recipe, Review } from "@/types";
 import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
-const SPOONACULAR_API_KEY = 'deb18101437e43d78803e73825ccfbac'
+const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
 
 export async function getRecipies(searchTerm: string) {
   if (searchTerm) {
@@ -22,12 +22,19 @@ export async function getRecipies(searchTerm: string) {
 }
 
 export async function getDesert() {
-
   const response = await axios.get(
-    `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=9&tags=dessert`
+    `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=9&tags=dessert`
   );
   console.log(response.data);
   return response.data;
+};
+
+export async function searchRecipe(name: string) {
+  const response = await axios.get(
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${name}&addRecipeInformation=true&number=12`
+  );
+  console.log(response.data.results);
+  return response.data.results;
 };
 
 
@@ -35,7 +42,7 @@ export async function getDesert() {
 //   try {
 //     console.log("second")
 //     const response = await axios.get(
-//       `https://api.spoonacular.com/recipes/random?apiKey=${SPOONACULAR_API_KEY}&number=${number}`
+//       `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=${number}`
 //     );
 //     const recipes: Recipe[] = response.data.recipes;
 //     return recipes;
@@ -50,7 +57,7 @@ export async function getRecipeDetails(id: number | undefined): Promise<Extended
     throw new Error("Recipe ID is required");
   }
   const response = await axios.get(
-    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${SPOONACULAR_API_KEY}`
+    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
   );
   return response.data as ExtendedRecipe;
 }

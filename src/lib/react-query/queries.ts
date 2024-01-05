@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllReviews, getDesert, getRecipeDetails, getRecipies, getRecipeReview, addtoReview, deleteReview } from "./fucntions";
+import { getAllReviews, getDesert, getRecipeDetails, getRecipies, getRecipeReview, addtoReview, deleteReview, searchRecipe } from "./fucntions";
 import { INewReview } from "@/types";
 
 export const useSearchRecipes = (searchTerm: string) => {
@@ -31,6 +31,13 @@ export const useGetRecipeDetails = (id: number | undefined) => {
         queryKey: ["useGetRecipeDetails", id],
         queryFn: async () => getRecipeDetails(id),
         staleTime: 300000, // 5 minutes in milliseconds
+    });
+};
+
+export const useSearchRecipe = (name: string) => {
+    return useQuery({
+        queryKey: ["useSearchRecipe"],
+        queryFn: async () => searchRecipe(name),
     });
 };
 

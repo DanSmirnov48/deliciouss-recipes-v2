@@ -9,8 +9,8 @@ export const siteConfig = {
       to: "/",
     },
     {
-      title: "Dashboard",
-      to: "/dashboard",
+      title: "Favourite",
+      to: "/favourite",
     }
   ],
   links: {
