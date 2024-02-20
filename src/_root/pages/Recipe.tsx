@@ -2,11 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useRecipesMenu } from "@/hooks/useMenu";
 import { useIngredients } from "@/hooks/useIngredients";
-import {
-  useGetAllReviews,
-  useGetRecipeDetails,
-  useGetReview,
-} from "@/lib/react-query/queries";
+import { useGetRecipeDetails, useGetReview } from "@/lib/react-query/queries";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";

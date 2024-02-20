@@ -78,11 +78,12 @@ export async function getAllReviews() {
 
 export const addtoReview = async (review: INewReview) => {
   try {
-    await axios.post(`/api/reviews`, review, {
+    const response = await axios.post(`/api/reviews`, review, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    return response
   } catch (error) {
     console.error('Error adding review:', error);
   }

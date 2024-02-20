@@ -1,75 +1,69 @@
 import * as z from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "./ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader } from "./ui/card";
-import { Rating } from "@smastrom/react-rating";
-import "@smastrom/react-rating/style.css";
-import { ratingStyle } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { Recipe } from "@/types";
+import { Textarea } from "./ui/textarea";
+import { ratingStyle } from "@/lib/utils";
+import { useForm } from "react-hook-form";
+import "@smastrom/react-rating/style.css";
+import { Button } from "@/components/ui/button";
+import { Rating } from "@smastrom/react-rating";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAddReview } from "@/lib/react-query/queries";
+import { Card, CardContent, CardTitle } from "./ui/card";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 const AddReviewForm = ({ recipe }: { recipe: Recipe }) => {
-  const [rating, setRating] = useState<number>(0);
-  const { mutateAsync, isPending, isSuccess } = useAddReview();
+
+  const { mutateAsync, isPending } = useAddReview();
+
   const formSchema = z.object({
+    rating: z.number().min(1, { message: "Please provide a Rating" }).max(5),
     review: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      rating: 0,
       review: "",
     },
   });
 
   const handleAddReview = async (review: z.infer<typeof formSchema>) => {
-    if (rating < 1) {
-      alert("Add Rating");
-      return;
-    }
-    mutateAsync({
-      rating: rating,
+    const res = await mutateAsync({
+      rating: review.rating,
       comment: review.review,
       recipe: recipe.id,
     });
-  };
-
-  useEffect(() => {
-    if (isSuccess) {
-      form.reset();
-      setRating(0);
+    if (res && res.status === 201 && res.statusText === "Created") {
+      form.reset()
+      console.log("Review Created")
+      console.log(res.data)
     }
-  }, [isSuccess]);
+  };
 
   return (
     <Card className="my-14 mx-4">
-      <CardHeader>
-        <CardDescription>
-          Rate <span className="text-base font-bold">{recipe.title}</span>
-        </CardDescription>
-        <Rating
-          value={rating}
-          onChange={setRating}
-          itemStyles={ratingStyle}
-          style={{ maxWidth: 150 }}
-        />
-      </CardHeader>
+      <CardTitle className="text-base font-normal text-center my-5"> How would you rate <i className="font-medium">{recipe.title} ?</i></CardTitle>
       <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleAddReview)}
             className="flex flex-col gap-5"
           >
+            <FormField
+              control={form.control}
+              name="rating"
+              render={({ field }) => (
+                <FormItem>
+                  <Rating
+                    itemStyles={ratingStyle}
+                    style={{ maxWidth: 150 }}
+                    {...field}
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="review"
@@ -82,7 +76,7 @@ const AddReviewForm = ({ recipe }: { recipe: Recipe }) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={rating < 1}>
+            <Button type="submit" disabled={form.getValues("rating") === 0}>
               {isPending ? "Posting" : "Submit"}
             </Button>
           </form>

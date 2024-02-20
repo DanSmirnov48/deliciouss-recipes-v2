@@ -9,14 +9,62 @@ import {
 } from "./ui/sheet";
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "./ui/separator";
-import { Link } from "react-router-dom";
-import { buttonVariants } from "./ui/button";
+import { Form, Link } from "react-router-dom";
+import { Button, buttonVariants } from "./ui/button";
 import { useIngredients } from "@/hooks/useIngredients";
 import CartItem from "./CartItem";
+import { Card, CardContent } from "./ui/card";
+import { FormField, FormItem, FormMessage, FormControl } from "./ui/form";
+import { Textarea } from "./ui/textarea";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const Cart = () => {
   const { ingredients } = useIngredients();
   const itemCount = ingredients.length;
+
+  const formSchema = z.object({
+    item: z.string(),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      item: "",
+    },
+  });
+
+  const handleAddReview = async (review: z.infer<typeof formSchema>) => {
+
+  };
+
+  const addNewItem = () => (
+    <Card className="my-14 mx-4">
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleAddReview)}
+            className="flex flex-col gap-5"
+          >
+            <FormField
+              control={form.control}
+              name="item"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" disabled={form.getValues("item") === ""}>Submit</Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  )
 
   return (
     <Sheet>
@@ -74,7 +122,7 @@ const Cart = () => {
             <div className="text-xl font-semibold">Your cart is empty</div>
             <SheetTrigger asChild>
               <Link
-                to="/products"
+                to="/"
                 className={buttonVariants({
                   variant: "link",
                   size: "sm",
