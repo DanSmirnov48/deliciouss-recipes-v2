@@ -34,10 +34,10 @@ export const useGetRecipeDetails = (id: number | undefined) => {
     });
 };
 
-export const useSearchRecipe = (name: string, ignoredIngredients: string) => {
+export const useSearchRecipe = (name: string, ignoredIngredients: string, diets : string) => {
     return useQuery({
         queryKey: ["useSearchRecipe"],
-        queryFn: async () => searchRecipe(name, ignoredIngredients),
+        queryFn: async () => searchRecipe(name, ignoredIngredients, diets),
     });
 };
 

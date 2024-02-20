@@ -1,7 +1,4 @@
-import { useDesertRecipe } from "@/hooks/useDesert";
-import useStringStore from "@/hooks/useFilter";
-import { useRandomRecipe } from "@/hooks/useRandomRecipe";
-import { INewReview, Recipe, Review } from "@/types";
+import { INewReview, Review } from "@/types";
 import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
@@ -30,9 +27,9 @@ export async function getDesert() {
   return response.data;
 };
 
-export async function searchRecipe(name: string, ignoredIngredients: string) {
+export async function searchRecipe(name: string, ignoredIngredients: string, diets: string) {
   const response = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${name}&excludeIngredients=${ignoredIngredients}&addRecipeInformation=true&number=12`
+    `https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&query=${name}&excludeIngredients=${ignoredIngredients}&diet=${diets}&addRecipeInformation=true&number=12`
   );
   console.log(response.data.results);
   return response.data.results;

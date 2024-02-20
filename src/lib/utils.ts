@@ -12,13 +12,19 @@ export const ratingStyle = {
   inactiveFillColor: "#fbf1a9",
 };
 
-export const defaultOptions = [
+export const defaultIngredientsOptions = [
   { value: 'milk', label: 'Milk' },
   { value: 'eggs', label: 'Eggs' },
   { value: 'peanut', label: 'Peanut' },
   { value: 'soy', label: 'Soy' },
   { value: 'wheat', label: 'Wheat' },
   { value: 'fish', label: 'Fish' },
+];
+
+export const dietOptions = [
+  { value: "gluten-free", label: "Gluten Free" },
+  { value: "vegetarian", label: "Vegetarian" },
+  { value: "vegan", label: "Vegan" },
 ];
 
 export const createOption = ({ label }: { label: string }) => ({

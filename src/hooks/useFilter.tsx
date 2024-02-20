@@ -1,4 +1,4 @@
-import { defaultOptions } from "@/lib/utils";
+import { defaultIngredientsOptions, dietOptions } from "@/lib/utils";
 import { create } from "zustand";
 
 export interface Item {
@@ -6,7 +6,7 @@ export interface Item {
     value: string;
 }
 
-interface StringStore {
+interface IngredientsStore {
     items: Item[];
     selectedOptions: Item[];
     setSelectedOptions: (values: Item[]) => void;
@@ -15,8 +15,14 @@ interface StringStore {
     clear: () => void;
 }
 
-const useStringStore = create<StringStore>((set) => ({
-    items: [...defaultOptions],
+interface DietsStrore {
+    items: Item[];
+    selectedOptions: Item[];
+    setSelectedOptions: (values: Item[]) => void;
+}
+
+const useStringStore = create<IngredientsStore>((set) => ({
+    items: [...defaultIngredientsOptions],
     selectedOptions: [],
     setSelectedOptions: (values) => set({ selectedOptions: values }),
     addOption: (item) => set((state) => ({ items: [...state.items, item] })),
@@ -27,4 +33,10 @@ const useStringStore = create<StringStore>((set) => ({
     clear: () => set({ items: [] }),
 }));
 
-export default useStringStore;
+const useDientsStore = create<DietsStrore>((set) => ({
+    items: [...dietOptions],
+    selectedOptions: [],
+    setSelectedOptions: (values) => set({ selectedOptions: values }),
+}));
+
+export { useStringStore, useDientsStore };

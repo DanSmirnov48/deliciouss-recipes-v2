@@ -2,23 +2,26 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import Search from "@/components/Search";
 import { useSearchRecipe } from "@/lib/react-query/queries";
-import Filter from "@/components/Filter";
-import useStringStore from "@/hooks/useFilter";
+import Filter from "@/components/IngredientsFilter";
+import { useStringStore, useDientsStore } from "@/hooks/useFilter";
 import { useEffect } from "react";
+import DietsFilter from "@/components/DietsFilter";
 
 const Seacrh = () => {
   const { search } = useParams();
   const ignoredIngredients = useStringStore((state) => state.selectedOptions.map((item) => item.value).join(", "));
-  const { data: recipes, isLoading, refetch } = useSearchRecipe(search!, ignoredIngredients);
+  const diets = useDientsStore((state) => state.selectedOptions.map((item) => item.value).join(", "));
+  const { data: recipes, isLoading, refetch } = useSearchRecipe(search!, ignoredIngredients, diets);
 
-  useEffect(() => { refetch() }, [ignoredIngredients])
+  useEffect(() => { refetch() }, [ignoredIngredients, diets])
 
   return (
     <div className="w-full my-20">
       <div className="my-10">
         <Search />
       </div>
-      <div className="flex flex-row justify-end my-10">
+      <div className="flex flex-row justify-end my-10 gap-3">
+        <DietsFilter />
         <Filter />
       </div>
       {!isLoading ? (

@@ -1,6 +1,6 @@
 import CreatableSelect from "react-select/creatable";
 import makeAnimated from 'react-select/animated';
-import useStringStore, { Item } from "@/hooks/useFilter";
+import { Item, useStringStore } from "@/hooks/useFilter";
 import { createOption } from "@/lib/utils";
 
 const Filter = () => {
