@@ -21,6 +21,7 @@
     "@splidejs/react-splide": "^0.7.12",
     "@tanstack/react-query": "^5.8.7",
     "axios": "^1.6.2",
+    "chroma-js": "^2.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.5",
@@ -31,12 +32,14 @@
     "react-hook-form": "^7.48.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.20.0",
+    "react-select": "^5.8.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
+    "@types/chroma-js": "^2.4.3",
     "@types/json-server": "^0.14.7",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.37",
