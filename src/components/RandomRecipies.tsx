@@ -1,22 +1,37 @@
+import { Card } from "./ui/card";
+import { useEffect } from "react";
+import "@splidejs/react-splide/css";
+import { Link } from "react-router-dom";
 import { useRandomRecipe } from "../hooks/useRandomRecipe";
 //@ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import { Card } from "./ui/card";
-import { Link } from "react-router-dom";
+import { useGetRandomRecipies } from "@/lib/react-query/queries";
 
 const RandomRecipies = () => {
-  const { recipes } = useRandomRecipe();
-  const isLoading = false;
+  const { recipes, addAllRecipes } = useRandomRecipe();
+  const { data, isFetching, refetch  } = useGetRandomRecipies()
+
+  useEffect(() => {
+    if (recipes.length === 0) {
+      refetch();
+      if(data && !isFetching){
+        addAllRecipes(data)
+      }
+    }
+  }, [recipes, isFetching])
 
   return (
     <div className="mt-10 max-w-full">
       <h1 className="text-3xl text-dark-4 text-center my-3 font-semibold">
         Pupolar Today
       </h1>
-      {!isLoading && (
+      {!isFetching && (
         <Splide
           options={{
+            type: 'loop',
+            autoplay: true,
+            pauseOnHover: false,
+            resetProgress: false,
             perPage: 3,
             arrows: true,
             pagination: true,
@@ -29,7 +44,7 @@ const RandomRecipies = () => {
             },
           }}
         >
-          {recipes.map(({recipe}, i) => {
+          {recipes.map(({ recipe }, i) => {
             return (
               <SplideSlide key={i}>
                 <Link to={`./recipe/${recipe.id}`}>

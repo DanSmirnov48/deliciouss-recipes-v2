@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllReviews, getDesert, getRecipeDetails, getRecipies, getRecipeReview, addtoReview, deleteReview, searchRecipe } from "./fucntions";
+import { getAllReviews, getDesertRecipes, getRecipeDetails, getRecipies, getRecipeReview, addtoReview, deleteReview, searchRecipe, getRandomRecipes } from "./fucntions";
 import { INewReview } from "@/types";
 
 export const useSearchRecipes = (searchTerm: string) => {
@@ -10,20 +10,21 @@ export const useSearchRecipes = (searchTerm: string) => {
     });
 };
 
-export const useGetDesertRecipies = () => {
+export const useGetDesertRecipies = (number: number = 9) => {
     return useQuery({
-        queryKey: ["useGetDesertRecipies"],
-        queryFn: async () => getDesert(),
+        queryKey: ["useGetDesertRecipies", number],
+        queryFn: async () => getDesertRecipes(number),
+        enabled: false,
     });
 };
 
-// export const useGetRandomRecipies = (number: number = 9) => {
-//     return useQuery({
-//         queryKey: ["useGetRandomRecipies", number],
-//         queryFn: async () => getRandomRecipes(number),
-//         enabled: !!number,
-//     });
-// };
+export const useGetRandomRecipies = (number: number = 9) => {
+    return useQuery({
+        queryKey: ["useGetRandomRecipies", number],
+        queryFn: async () => getRandomRecipes(number),
+        enabled: false,
+    });
+};
 
 
 export const useGetRecipeDetails = (id: number | undefined) => {

@@ -1,22 +1,37 @@
-import { useRandomRecipe } from "../hooks/useRandomRecipe";
+import { Card } from "./ui/card";
+import { useEffect } from "react";
+import "@splidejs/react-splide/css";
+import { Link } from "react-router-dom";
+import { useDesertRecipe } from "@/hooks/useDesert";
 //@ts-ignore
 import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import { Card } from "./ui/card";
-import { Link } from "react-router-dom";
+import { useGetDesertRecipies } from "@/lib/react-query/queries";
 
 const DesertRecipes = () => {
-  const { recipes } = useRandomRecipe();
-  const isLoading = false;
+  const { deserts, addAllDeserts } = useDesertRecipe();
+  const { data, isFetching, refetch } = useGetDesertRecipies()
+
+  useEffect(() => {
+    if (deserts.length === 0) {
+      refetch();
+      if (data && !isFetching) {
+        addAllDeserts(data)
+      }
+    }
+  }, [deserts, isFetching])
 
   return (
     <div className="mt-10 max-w-full">
       <h1 className="text-3xl text-dark-4 text-center my-3 font-semibold">
         Deserts
       </h1>
-      {!isLoading && (
+      {!isFetching && (
         <Splide
           options={{
+            type: 'loop',
+            autoplay: true,
+            pauseOnHover: false,
+            resetProgress: false,
             perPage: 3,
             arrows: true,
             pagination: true,
@@ -29,7 +44,7 @@ const DesertRecipes = () => {
             },
           }}
         >
-          {recipes.map(({recipe}, i) => {
+          {deserts.map(({ recipe }, i) => {
             return (
               <SplideSlide key={i}>
                 <Link to={`./recipe/${recipe.id}`}>

@@ -1,4 +1,4 @@
-import { INewReview, Review } from "@/types";
+import { INewReview, Recipe, Review } from "@/types";
 import { ExtendedRecipe } from "@/types/index";
 import axios from "axios";
 const API_KEY = import.meta.env.VITE_SPOONACULAR_API_KEY
@@ -19,12 +19,17 @@ export async function getRecipies(searchTerm: string) {
   return [];
 }
 
-export async function getDesert() {
-  const response = await axios.get(
-    `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=9&tags=dessert`
-  );
-  console.log(response.data);
-  return response.data;
+export async function getDesertRecipes(number: number = 9) {
+  try {
+    const response = await axios.get(
+      `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=${number}&tags=dessert`
+    );
+    const recipes: Recipe[] = response.data.recipes;
+    return recipes;
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    throw error;
+  }
 };
 
 export async function searchRecipe(name: string, ignoredIngredients: string, diets: string) {
@@ -36,19 +41,19 @@ export async function searchRecipe(name: string, ignoredIngredients: string, die
 };
 
 
-// export async function getRandomRecipes(number: number = 9) {
-//   try {
-//     console.log("second")
-//     const response = await axios.get(
-//       `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=${number}`
-//     );
-//     const recipes: Recipe[] = response.data.recipes;
-//     return recipes;
-//   } catch (error) {
-//     console.error('Error fetching recipes:', error);
-//     throw error;
-//   }
-// }
+export async function getRandomRecipes(number: number = 9) {
+  try {
+    console.log("second")
+    const response = await axios.get(
+      `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&number=${number}`
+    );
+    const recipes: Recipe[] = response.data.recipes;
+    return recipes;
+  } catch (error) {
+    console.error('Error fetching recipes:', error);
+    throw error;
+  }
+}
 
 export async function getRecipeDetails(id: number | undefined): Promise<ExtendedRecipe> {
   if (!id) {
